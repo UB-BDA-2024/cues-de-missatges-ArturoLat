@@ -202,33 +202,6 @@ def get_cassandra_values(db:Session, cassandra:CassandraClient, type:str, mongod
 
     return result_json
 
-#Method for get the query for search sensors that depends on the type of search
-#Match and prefix have the same type of query and Similar is diferent.
-def get_query(query:str, search_type:str):
-    final_query = {}
-    query = json.loads(query.lower())
-    if search_type in ['match', 'prefix']:
-        final_query = {
-            'query': {
-                search_type: query
-            }
-        }
-    elif search_type == 'similar':
-        key = list(query)[0]
-        final_query = {
-            "query": {
-                "match": {
-                    key: {
-                        "query": query[key],
-                        "fuzziness": 'auto',
-                        'operator': 'and'
-                    }
-                }
-            }
-        }
-
-    return final_query
-
 def delete_sensor(db: Session, sensor_id: int, mongodb: MongoDBClient, redis: RedisClient, elasticdb: ElasticsearchClient, timescale: Timescale):
     db_sensor = db.query(models.Sensor).filter(models.Sensor.id == sensor_id).first()
     if db_sensor is None:
@@ -256,3 +229,30 @@ def search_sensors(db: Session, mongodb: MongoDBClient, elasticdb: Elasticsearch
         search_sensors_dict.append(mongo_sensor)
 
     return search_sensors_dict
+
+#Method for get the query for search sensors that depends on the type of search
+#Match and prefix have the same type of query and Similar is diferent.
+def get_query(query:str, search_type:str):
+    final_query = {}
+    query = json.loads(query.lower())
+    if search_type in ['match', 'prefix']:
+        final_query = {
+            'query': {
+                search_type: query
+            }
+        }
+    elif search_type == 'similar':
+        key = list(query)[0]
+        final_query = {
+            "query": {
+                "match": {
+                    key: {
+                        "query": query[key],
+                        "fuzziness": 'auto',
+                        'operator': 'and'
+                    }
+                }
+            }
+        }
+
+    return final_query
