@@ -242,7 +242,7 @@ def delete_sensor(db: Session, sensor_id: int, mongodb: MongoDBClient, redis: Re
     timescale.execute(ts_delete_query)
     return db_sensor
 
-def search_sensors(db: Session, mongodb: MongoDBClient, elasticdb: ElasticsearchClient, query=str, size=int, search_type=str):
+def search_sensors(db: Session, mongodb: MongoDBClient, elasticdb: ElasticsearchClient, query:str, size:int, search_type:str):
     search_sensors_dict = []
     #We get the final query
     final_query = get_query(query, search_type)
