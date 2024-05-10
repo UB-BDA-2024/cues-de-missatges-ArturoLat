@@ -1,7 +1,7 @@
 name: Autograding Tests
 'on':
-- push
-- repository_dispatch
+  - push
+  - repository_dispatch
 permissions:
   checks: write
   actions: read
@@ -13,18 +13,42 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Test Final
-      id: test-final
-      uses: classroom-resources/autograding-command-grader@v1
-      with:
-        test-name: Test Final
-        setup-command: docker-compose up -d
-        command: docker exec bdda_api sh -c "pytest"
-        timeout: 30
-        max-score: 65
+
+    - name: Set up Docker Environment
+      run: docker-compose up -d
+
+    - name: Run Clau Valor Test
+      id: clau-valor-test
+      run: docker exec bdda_api sh -c "PYTHONPATH=/app/app pytest /app/app/sensors/tests/clau_valor_test.py"
+      timeout-minutes: 5
+
+    - name: Run Columnars Test
+      id: columnars-test
+      run: docker exec bdda_api sh -c "PYTHONPATH=/app/app pytest /app/app/sensors/tests/columnars_test.py"
+      timeout-minutes: 5
+
+    - name: Run Dades Documentals Test
+      id: dadesdocumentals-test
+      run: docker exec bdda_api sh -c "PYTHONPATH=/app/app pytest /app/app/sensors/tests/dadesdocumentals_test.py"
+      timeout-minutes: 5
+
+    - name: Run Dades Temporals Test
+      id: dadestemporals-test
+      run: docker exec bdda_api sh -c "PYTHONPATH=/app/app pytest /app/app/sensors/tests/dadestemporals_test.py"
+      timeout-minutes: 5
+
+    - name: Run Indexos Test
+      id: indexos-test
+      run: docker exec bdda_api sh -c "PYTHONPATH=/app/app pytest /app/app/sensors/tests/indexos_test.py"
+      timeout-minutes: 5
+
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        TEST-FINAL_RESULTS: "${{steps.test-final.outputs.result}}"
+        CLAU_VALOR_RESULTS: "${{ steps.clau-valor-test.outputs.result }}"
+        COLUMNARS_RESULTS: "${{ steps.columnars-test.outputs.result }}"
+        DADES_DOCUMENTALS_RESULTS: "${{ steps.dadesdocumentals-test.outputs.result }}"
+        DADES_TEMPORALS_RESULTS: "${{ steps.dadestemporals-test.outputs.result }}"
+        INDEXOS_RESULTS: "${{ steps.indexos-test.outputs.result }}"
       with:
-        runners: test-final
+        runners: clau-valor-test, columnars-test, dadesdocumentals-test, dadestemporals-test, indexos-test

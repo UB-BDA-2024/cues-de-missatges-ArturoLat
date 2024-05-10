@@ -95,7 +95,6 @@ def search_sensors(query: str, size: int = 10, search_type: str = "match", db: S
     search_sensors = repository.search_sensors(db=db,mongodb=mongodb_client, elasticdb=elasticdb_client, query=query, size=size, search_type=search_type)
     if not search_sensors:
         raise HTTPException(status_code=404, detail="There are no sensors that matches your query")
-
     return search_sensors
 # 🙋🏽‍♀️ Add here the route to get the temperature values of a sensor
 

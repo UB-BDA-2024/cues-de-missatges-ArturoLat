@@ -39,7 +39,7 @@ def clear_dbs():
             time.sleep(5)
 
 
-def test_create_sensor_temperatura_1():
+def test_columnars_create_sensor_temperatura_1():
     """A sensor can be properly created"""
     response = client.post("/sensors", json={"name": "Sensor Temperatura 1", "latitude": 1.0, "longitude": 1.0,
                                              "type": "Temperatura", "mac_address": "00:00:00:00:00:00",
@@ -53,7 +53,7 @@ def test_create_sensor_temperatura_1():
                                "description": "Sensor de temperatura model Dummy Temp del fabricant Dummy"}
 
 
-def test_create_sensor_velocitat_1():
+def test_columnars_create_sensor_velocitat_1():
     response = client.post("/sensors",
                            json={"name": "Velocitat 1", "latitude": 1.0, "longitude": 1.0, "type": "Velocitat",
                                  "mac_address": "00:00:00:00:00:01", "manufacturer": "Dummy", "model": "Dummy Vel",
@@ -66,7 +66,7 @@ def test_create_sensor_velocitat_1():
                                "description": "Sensor de velocitat model Dummy Vel del fabricant Dummy cruïlla 1"}
 
 
-def test_create_sensor_velocitat_2():
+def test_columnars_create_sensor_velocitat_2():
     response = client.post("/sensors",
                            json={"name": "Velocitat 2", "latitude": 2.0, "longitude": 2.0, "type": "Velocitat",
                                  "mac_address": "00:00:00:00:00:02", "manufacturer": "Dummy", "model": "Dummy Vel",
@@ -79,7 +79,7 @@ def test_create_sensor_velocitat_2():
                                "description": "Sensor de velocitat model Dummy Vel del fabricant Dummy cruïlla 2"}
 
 
-def test_create_sensor_temperatura_2():
+def test_columnars_create_sensor_temperatura_2():
     """A sensor can be properly created"""
     response = client.post("/sensors", json={"name": "Sensor Temperatura 2", "latitude": 2.0, "longitude": 2.0,
                                              "type": "Temperatura", "mac_address": "00:00:00:00:00:03",
@@ -93,43 +93,43 @@ def test_create_sensor_temperatura_2():
                                "description": "Sensor de temperatura model Dummy Temp del fabricant Dummy"}
 
 
-def test_post_sensor_data_temperatura_1():
+def test_columnars_post_sensor_data_temperatura_1():
     response = client.post("/sensors/1/data", json={"temperature": 1.0, "humidity": 1.0, "battery_level": 1.0,
                                                     "last_seen": "2020-01-01T00:00:00.000Z"})
     assert response.status_code == 200
 
 
-def test_post_sensor_data_temperatura_2():
+def test_columnars_post_sensor_data_temperatura_2():
     response = client.post("/sensors/1/data", json={"temperature": 4.0, "humidity": 1.0, "battery_level": 1.0,
                                                     "last_seen": "2020-01-01T00:00:00.000Z"})
     assert response.status_code == 200
 
 
-def test_post_sensor_data_temperatura_3():
+def test_columnars_post_sensor_data_temperatura_3():
     response = client.post("/sensors/4/data", json={"temperature": 15.0, "humidity": 1.0, "battery_level": 1.0,
                                                     "last_seen": "2020-01-02T00:00:00.000Z"})
     assert response.status_code == 200
 
 
-def test_post_sensor_data_temperatura_4():
+def test_columnars_post_sensor_data_temperatura_4():
     response = client.post("/sensors/4/data", json={"temperature": 17.0, "humidity": 1.0, "battery_level": 1.0,
                                                     "last_seen": "2020-01-02T00:00:00.000Z"})
     assert response.status_code == 200
 
 
-def test_post_sensor_data_veolicitat_1():
+def test_columnars_post_sensor_data_veolicitat_1():
     response = client.post("/sensors/2/data",
                            json={"velocity": 1.0, "battery_level": 0.1, "last_seen": "2020-01-01T00:00:00.000Z"})
     assert response.status_code == 200
 
 
-def test_post_sensor_data_veolicitat_2():
+def test_columnars_post_sensor_data_veolicitat_2():
     response = client.post("/sensors/3/data",
                            json={"velocity": 15.0, "battery_level": 0.15, "last_seen": "2020-01-01T01:00:00.000Z"})
     assert response.status_code == 200
 
 
-def test_get_values_sensor_temperatura():
+def test_columnars_get_values_sensor_temperatura():
     response = client.get("/sensors/temperature/values")
     assert response.status_code == 200
     assert response.json() == {
@@ -147,14 +147,14 @@ def test_get_values_sensor_temperatura():
                                  "average_temperature": 16.0}]}]}
 
 
-def test_get_sensors_quantity():
+def test_columnars_get_sensors_quantity():
     response = client.get("/sensors/quantity_by_type")
     assert response.status_code == 200
     assert response.json() == {
         "sensors": [{"type": "Temperatura", "quantity": 2}, {"type": "Velocitat", "quantity": 2}]}
 
 
-def test_get_sensors_low_battery():
+def test_columnars_get_sensors_low_battery():
     response = client.get("/sensors/low_battery")
     assert response.status_code == 200
     assert response.json() == {"sensors": [
