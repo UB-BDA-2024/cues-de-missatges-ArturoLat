@@ -19,28 +19,59 @@ jobs:
 
     - name: Run Clau Valor Test
       id: clau-valor-test
-      run: docker exec bdda_api sh -c "PYTHONPATH=/app/app pytest /app/app/sensors/tests/clau_valor_test.py"
+      run: |
+        result=$(docker exec bdda_api sh -c "PYTHONPATH=/app pytest /app/app/sensors/tests/clau_valor_test.py")
+        echo "$result"
+        passed=$(echo "$result" | grep -Po '\d+ passed' | grep -Po '\d+')
+        echo "clau-valor-test-points=$passed" >> $GITHUB_ENV
       timeout-minutes: 5
 
     - name: Run Columnars Test
       id: columnars-test
-      run: docker exec bdda_api sh -c "PYTHONPATH=/app/app pytest /app/app/sensors/tests/columnars_test.py"
+      run: |
+        result=$(docker exec bdda_api sh -c "PYTHONPATH=/app pytest /app/app/sensors/tests/columnars_test.py")
+        echo "$result"
+        passed=$(echo "$result" | grep -Po '\d+ passed' | grep -Po '\d+')
+        echo "columnars-test-points=$passed" >> $GITHUB_ENV
       timeout-minutes: 5
 
     - name: Run Dades Documentals Test
       id: dadesdocumentals-test
-      run: docker exec bdda_api sh -c "PYTHONPATH=/app/app pytest /app/app/sensors/tests/dadesdocumentals_test.py"
+      run: |
+        result=$(docker exec bdda_api sh -c "PYTHONPATH=/app pytest /app/app/sensors/tests/dadesdocumentals_test.py")
+        echo "$result"
+        passed=$(echo "$result" | grep -Po '\d+ passed' | grep -Po '\d+')
+        echo "dadesdocumentals-test-points=$passed" >> $GITHUB_ENV
       timeout-minutes: 5
 
     - name: Run Dades Temporals Test
       id: dadestemporals-test
-      run: docker exec bdda_api sh -c "PYTHONPATH=/app/app pytest /app/app/sensors/tests/dadestemporals_test.py"
+      run: |
+        result=$(docker exec bdda_api sh -c "PYTHONPATH=/app pytest /app/app/sensors/tests/dadestemporals_test.py")
+        echo "$result"
+        passed=$(echo "$result" | grep -Po '\d+ passed' | grep -Po '\d+')
+        echo "dadestemporals-test-points=$passed" >> $GITHUB_ENV
       timeout-minutes: 5
 
     - name: Run Indexos Test
       id: indexos-test
-      run: docker exec bdda_api sh -c "PYTHONPATH=/app/app pytest /app/app/sensors/tests/indexos_test.py"
+      run: |
+        result=$(docker exec bdda_api sh -c "PYTHONPATH=/app pytest /app/app/sensors/tests/indexos_test.py")
+        echo "$result"
+        passed=$(echo "$result" | grep -Po '\d+ passed' | grep -Po '\d+')
+        echo "indexos-test-points=$passed" >> $GITHUB_ENV
       timeout-minutes: 5
+
+    - name: Sum Points and Check
+      run: |
+        total_points=$((clau-valor-test-points + columnars-test-points + dadesdocumentals-test-points + dadestemporals-test-points + indexos-test-points))
+        echo "Total Points: $total_points"
+        if [ "$total_points" -eq 55 ]; then
+          echo "All tests passed successfully!"
+        else
+          echo "Some tests failed. Total passed tests: $total_points"
+          exit 1
+        fi
 
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
