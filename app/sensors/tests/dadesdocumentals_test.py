@@ -146,15 +146,19 @@ def test_documentals_get_sensor_2_data_updated():
 def test_documentals_get_near():
     response = client.get("/sensors/near?latitude=1.0&longitude=1.0&radius=1")
     assert response.status_code == 200
-    json = response.json()
-    assert json[0]["id"] == 1
-    assert json[0]["name"] == "Sensor Temperatura 1"
-    assert json[0]["temperature"] == 2.0
-    assert json[0]["humidity"] == 2.0
-    assert json[0]["battery_level"] == 1.9
-    assert json[0]["last_seen"] == "2020-01-01T00:00:01.000Z"
-    assert json[1]["id"] == 2
-    assert json[1]["name"] == "Sensor Velocitat 1"
-    assert json[1]["velocity"] == 46.0
-    assert json[1]["battery_level"] == 1.9
-    assert json[1]["last_seen"] == "2020-01-01T00:00:01.000Z"
+    assert response.json() == {
+        {
+            "id": 1,
+            "name": "Sensor Temperatura 1",
+            "temperature": 2.0,
+            "humidity": 2.0,
+            "battery_level": 1.9,
+            "last_seen": "2020-01-01T00:00:01.000Z"
+        },
+        {
+            "id": 2,
+            "name": "Sensor Velocitat 1",
+            "velocity": 46.0,
+            "battery_level": 1.9,
+            "last_seen": "2020-01-01T00:00:01.000Z"
+        }}

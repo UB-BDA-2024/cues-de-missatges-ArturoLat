@@ -21,26 +21,31 @@ jobs:
       id: clau-valor-test
       run: docker exec bdda_api sh -c "PYTHONPATH=/app pytest /app/app/sensors/tests/clau_valor_test.py"
       timeout-minutes: 5
+      continue-on-error: true
 
     - name: Run Columnars Test
       id: columnars-test
       run: docker exec bdda_api sh -c "PYTHONPATH=/app pytest /app/app/sensors/tests/columnars_test.py"
       timeout-minutes: 5
+      continue-on-error: true
 
     - name: Run Dades Documentals Test
       id: dadesdocumentals-test
       run: docker exec bdda_api sh -c "PYTHONPATH=/app pytest /app/app/sensors/tests/dadesdocumentals_test.py"
       timeout-minutes: 5
+      continue-on-error: true
 
     - name: Run Dades Temporals Test
       id: dadestemporals-test
       run: docker exec bdda_api sh -c "PYTHONPATH=/app pytest /app/app/sensors/tests/dadestemporals_test.py"
       timeout-minutes: 5
+      continue-on-error: true
 
     - name: Run Indexos Test
       id: indexos-test
       run: docker exec bdda_api sh -c "PYTHONPATH=/app pytest /app/app/sensors/tests/indexos_test.py"
       timeout-minutes: 5
+      continue-on-error: true
 
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
