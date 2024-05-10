@@ -1,5 +1,4 @@
-from datetime import time
-
+import time
 from fastapi.testclient import TestClient
 import pytest
 from app.main import app
@@ -38,6 +37,7 @@ def clear_dbs():
             break
         except Exception as e:
             time.sleep(5)
+
 @pytest.fixture(scope="session", autouse=True)   
 def create_sensor():
      """A sensor can be properly created"""
