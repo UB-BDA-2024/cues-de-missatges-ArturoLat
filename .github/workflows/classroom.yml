@@ -21,7 +21,7 @@ jobs:
         setup-command: docker-compose up -d
         command: docker exec bdda_api sh -c "pytest"
         timeout: 30
-        max-score: 10
+        max-score: 59
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
