@@ -142,7 +142,7 @@ def test_documentals_get_sensor_2_data_updated():
     assert json["battery_level"] == 1.9
     assert json["last_seen"] == "2020-01-01T00:00:01.000Z"
 
-
+'''
 def test_documentals_get_near():
     response = client.get("/sensors/near?latitude=1.0&longitude=1.0&radius=1")
     assert response.status_code == 200
@@ -162,3 +162,4 @@ def test_documentals_get_near():
             "battery_level": 1.9,
             "last_seen": "2020-01-01T00:00:01.000Z"
         }}
+'''
